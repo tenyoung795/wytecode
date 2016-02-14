@@ -104,7 +104,7 @@
 		    //console.log(str);
 		    //alert(str);
         //alert("Sending to back end!");
-				var socket = new WebSocket("ws://localhost:9998/", "");
+				var socket = new WebSocket("ws://localhost:9998/");
 				socket.onopen = function(event) {
 			     for(var i = 0; i < strs.length; i++) {
 				    socket.send(strs[i]);
