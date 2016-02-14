@@ -6,6 +6,7 @@
   </head>
   <body>
   	<button id="submit" onclick="sendToBackEnd()">Submit</button>
+  	<button id="clearAll" onclick="clearAll()">Clear All</button>
     <script>
       var isMouseDown = false;
       var mouseWasClickedHere;
@@ -13,6 +14,17 @@
       var ctx;
       var points = {};
       var keys = [];
+
+
+      function clearAll(){
+      	for(var i = 0; i < keys.length;i++){
+      		points[keys[i]] = [];
+      		var c = document.getElementById("c_"+keys[i]);
+      		//alert("c_"+keys[i]);
+      		var con  = c.getContext("2d");
+      		con.clearRect(0, 0, c.width, c.height);
+      	}
+      }
 
       function listOfListsOfCoordinatesAsString(list) {
       var ret = "";
@@ -34,13 +46,13 @@
 					    //console.log(str);
 					    //alert(str);
       //alert("Sending to back end!");
-					    var socket = new WebSocket(/*URL*/, /*protocol*/);
-					    socket.onopen = function(event) {
+					    //var socket = new WebSocket(/*URL, protocol*/);
+					    /**socket.onopen = function(event) {
 					    socket.send(str);
 					    };
 					    socket.onmessage = function(event) {
 					    //do something here
-					    }
+					    }*/
       }
       
       function addDownHandler(obj) {
@@ -81,7 +93,6 @@
       }
       });
       }
-
       function getPoints(obj) {
       var ret = "";
       var counter = 0;
@@ -91,7 +102,6 @@
 				 }
 				 return ret;
       }
-
       function getListString(){
       	var ret = "";
       	for (var i = 0; i < keys.length;i++){
@@ -99,7 +109,6 @@
       	}
       	return ret;
       }
-
       function getList() {
       	var ret = [];
       	for(var i = 0; i < keys.length; i++) {
@@ -107,7 +116,6 @@
       	}
       	return ret;
       }
-
       function listAsString(lst) {
       	var ret = "";
       	for(var i = 0; i < lst.length; i++) {
