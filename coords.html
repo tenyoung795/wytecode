@@ -5,12 +5,18 @@
     
   </head>
   <body>
+  	<button id="submit" onclick="sendToBackEnd()">Submit</button>
     <script>
       var isMouseDown = false;
       var mouseWasClickedHere;
       var isDrawing = false;
       var ctx;
       var points = {};
+      var keys = [];
+
+      function sendToBackEnd(){
+      	var list = getList();
+      }
       
       function addDownHandler(obj) {
       obj.addEventListener("mousedown", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
@@ -30,18 +36,18 @@
       }
       
       function addMoveHandler(obj){
-      //ctx = obj.getElementsByTagName("canvas")[0].getContext("2d");
+     
       obj.addEventListener("mousemove", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
       var yPosition = e.clientY - obj.getBoundingClientRect().top;
       if(isMouseDown){
       if(mouseWasClickedHere === obj) {
-      //obj.innerHTML = "move:" + xPosition + " " + yPosition;
+      
       if(isDrawing) {
-      //ctx.beginPath();
+      
       ctx.lineTo(xPosition, yPosition);
-      //ctx.moveTo(xPosition, yPosition);
+      
       ctx.stroke();
-      //ctx.closePath();
+   
       }
       }
       var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
@@ -55,10 +61,35 @@
       var ret = "";
       var counter = 0;
       for(counter = 0; counter < points[obj.id].length; counter++) {
-				 var coords = "(" + points[counter].x + ", " + points[counter].y + ") ";
+				 var coords = "(" + points[obj.id][counter].x + ", " + points[obj.id][counter].y + ") ";
 				 ret += coords;
 				 }
 				 return ret;
+      }
+
+      function getListString(){
+      	var ret = "";
+      	for (var i = 0; i < keys.length;i++){
+      		ret+= listAsString(points[keys[i]]);
+      	}
+      	return ret;
+      }
+
+      function getList() {
+      	var ret = [];
+      	for(var i = 0; i < keys.length; i++) {
+      		ret[i] = points[keys[i]];
+      	}
+      	return ret;
+      }
+
+      function listAsString(lst) {
+      	var ret = "";
+      	for(var i = 0; i < lst.length; i++) {
+      		var coords = "(" + lst[i].x + ", " + lst[i].y + ") ";
+      		ret += coords;
+      	}
+      	return ret;
       }
       
       function addUpHandler(obj) {
@@ -67,14 +98,13 @@
       var yPosition = e.clientY - obj.getBoundingClientRect().top;
       isMouseDown = false;
       if(obj === mouseWasClickedHere) {
-      //obj.innerHTML = "up:" + xPosition + " " + yPosition;
-      if(isDrawing) {
-      //ctx.beginPath();
-      ctx.lineTo(xPosition, yPosition);
-      //ctx.moveTo(xPosition, yPosition);
-      ctx.stroke();
-      //ctx.closePath();
-      alert(getPoints(obj));
+      
+      	if(isDrawing) {
+      
+      		ctx.lineTo(xPosition, yPosition);
+      		ctx.stroke();
+      		alert(getPoints(obj));
+      		//alert(getListString());
       }
       }
       var coords = "(" + e.clientX + ", " + e.clientY + ").";
@@ -103,6 +133,8 @@
 					      td.id = i.toString() + "_" + j.toString();
 					      var canvasHTML = "<canvas id=\"c_"+i.toString()+"_"+j.toString()+"\" width=\"50\" height=\"50\"></canvas>";
 					      td.innerHTML = canvasHTML;
+					      points[td.id] = [];
+					      keys[keys.length] = td.id;
 					      addDownHandler(td);
 					      addUpHandler(td);
 					      addMoveHandler(td);
