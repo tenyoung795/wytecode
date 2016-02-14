@@ -1,104 +1,116 @@
-
 <!DOCTYPE html>
-	  <html>
-	  <head>
-	  <title>CodeCanvas</title>
-
-	  </head>
-	  <body>
-	  	<script>
-	  var isMouseDown = false;
-	  var mouseWasClickedHere;
-	  var isDrawing = false;
-	  var ctx;
-	  	
-	function addDownHandler(obj) {
-		obj.addEventListener("mousedown", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
-    		var yPosition = e.clientY - obj.getBoundingClientRect().top;
-    		//obj.innerHTML = "down:" + xPosition + " " + yPosition;
-    		isMouseDown = true;
-    		var coords = "Coordinates: (" + e.clientX + ", " + e.clientY + ") -> ";
-    		document.getElementById("coords").innerHTML = coords;
-    		mouseWasClickedHere = obj;
-    		ctx = document.getElementById("c_"+obj.id).getContext("2d");
-    		isDrawing = true;
-    		ctx.moveTo(xPosition, yPosition);
-    		ctx.stroke();
-    	});
-    }
-
-    function addMoveHandler(obj){
-    	//ctx = obj.getElementsByTagName("canvas")[0].getContext("2d");
-    	obj.addEventListener("mousemove", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
-    	var yPosition = e.clientY - obj.getBoundingClientRect().top;
-    	if(isMouseDown){
-    		if(mouseWasClickedHere === obj) {
-    			//obj.innerHTML = "move:" + xPosition + " " + yPosition;
-    			if(isDrawing) {
-    				//ctx.beginPath();
-    				ctx.lineTo(xPosition, yPosition);
-    				//ctx.moveTo(xPosition, yPosition);
-    				ctx.stroke();
-    				//ctx.closePath();
-    			}
-    		}
-    		var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
-    		document.getElementById("coords").innerHTML += coords;
-    	}
-    });
-    }
-
-    function addUpHandler(obj) {
-		obj.addEventListener("mouseup", function(e){
-			var xPosition = e.clientX - obj.getBoundingClientRect().left;
-    		var yPosition = e.clientY - obj.getBoundingClientRect().top;
-    		isMouseDown = false;
-    		if(obj === mouseWasClickedHere) {
-    			//obj.innerHTML = "up:" + xPosition + " " + yPosition;
-    			if(isDrawing) {
-    				/**ctx.beginPath();
-    				ctx.lineTo(xPosition, yPosition);
-    				ctx.moveTo(xPosition, yPosition);
-    				ctx.stroke();
-    				//ctx.closePath();*/
-    			}
-    		}
-    		var coords = "(" + e.clientX + ", " + e.clientY + ").";
-    		document.getElementById("coords").innerHTML += coords;
-    		isDrawing = false;
-    	});
-		
-    }
-
-	var table = document.createElement('TABLE');
-    table.border='1';
-   
-    var tableBody = document.createElement('TBODY');
-    table.appendChild(tableBody);
-     
-    for (var i=0; i<10; i++){
-       var tr = document.createElement('TR');
-       tr.id = "row " + i.toString();
-       tableBody.appendChild(tr);
+<html>
+  <head>
+    <title>CodeCanvas</title>
+    
+  </head>
+  <body>
+    <script>
+      var isMouseDown = false;
+      var mouseWasClickedHere;
+      var isDrawing = false;
+      var ctx;
+      var points = [];
       
-       for (var j=0; j<10; j++){
-           var td = document.createElement('TD');
-           td.width='50';
-           td.height = '50';
-           tr.appendChild(td);
-           td.id = i.toString() + "_" + j.toString();
-           var canvasHTML = "<canvas id=\"c_"+i.toString()+"_"+j.toString()+"\" width=\"50\" height=\"50\"></canvas>";
-           td.innerHTML = canvasHTML;
-           addDownHandler(td);
-           addUpHandler(td);
-           addMoveHandler(td);
-       }
-    }
+      function addDownHandler(obj) {
+      obj.addEventListener("mousedown", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
+      var yPosition = e.clientY - obj.getBoundingClientRect().top;
+      //obj.innerHTML = "down:" + xPosition + " " + yPosition;
+      isMouseDown = true;
+      var coords = "Coordinates: (" + e.clientX + ", " + e.clientY + ") -> ";
+      document.getElementById("coords").innerHTML = coords;
+      mouseWasClickedHere = obj;
+      ctx = document.getElementById("c_"+obj.id).getContext("2d");
+      isDrawing = true;
+      ctx.moveTo(xPosition, yPosition);
+      points[points.length] = {x: xPosition, y: yPosition};
+      ctx.stroke();
+      });
+      }
+      
+      function addMoveHandler(obj){
+      //ctx = obj.getElementsByTagName("canvas")[0].getContext("2d");
+      obj.addEventListener("mousemove", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
+      var yPosition = e.clientY - obj.getBoundingClientRect().top;
+      if(isMouseDown){
+      if(mouseWasClickedHere === obj) {
+      //obj.innerHTML = "move:" + xPosition + " " + yPosition;
+      if(isDrawing) {
+      //ctx.beginPath();
+      ctx.lineTo(xPosition, yPosition);
+      //ctx.moveTo(xPosition, yPosition);
+      ctx.stroke();
+      //ctx.closePath();
+      }
+      }
+      var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
+      document.getElementById("coords").innerHTML += coords;
+      }
+      });
+      }
+
+      function getPoints() {
+      var ret = "";
+      var counter = 0;
+      for(counter = 0; counter < points.length; counter++) {
+				 var coords = "(" + points[counter].x + ", " + points[counter].y + ") ";
+				 ret += coords;
+				 }
+				 return ret;
+      }
+      
+      function addUpHandler(obj) {
+      obj.addEventListener("mouseup", function(e){
+      var xPosition = e.clientX - obj.getBoundingClientRect().left;
+      var yPosition = e.clientY - obj.getBoundingClientRect().top;
+      isMouseDown = false;
+      if(obj === mouseWasClickedHere) {
+      //obj.innerHTML = "up:" + xPosition + " " + yPosition;
+      if(isDrawing) {
+      //ctx.beginPath();
+      ctx.lineTo(xPosition, yPosition);
+      //ctx.moveTo(xPosition, yPosition);
+      ctx.stroke();
+      //ctx.closePath();
+      alert(points);
+      }
+      }
+      var coords = "(" + e.clientX + ", " + e.clientY + ").";
+      document.getElementById("coords").innerHTML += coords;
+      isDrawing = false;
+      });
+      
+      }
+      
+      var table = document.createElement('TABLE');
+      table.border='1';
+      
+      var tableBody = document.createElement('TBODY');
+      table.appendChild(tableBody);
+      
+      for (var i=0; i<10; i++){
+			  var tr = document.createElement('TR');
+			  tr.id = "row " + i.toString();
+			  tableBody.appendChild(tr);
+			  
+			  for (var j=0; j<10; j++){
+					      var td = document.createElement('TD');
+					      td.width='50';
+					      td.height = '50';
+					      tr.appendChild(td);
+					      td.id = i.toString() + "_" + j.toString();
+					      var canvasHTML = "<canvas id=\"c_"+i.toString()+"_"+j.toString()+"\" width=\"50\" height=\"50\"></canvas>";
+					      td.innerHTML = canvasHTML;
+					      addDownHandler(td);
+					      addUpHandler(td);
+					      addMoveHandler(td);
+					      }
+					      }
     	document.body.appendChild(table);
-
-
-      </script>
-
-      <p id="coords">Coordinates: </p>
-	  </body>
-	  </html>
+					      
+					      
+					      </script>
+    
+    <p id="coords">Coordinates: </p>
+  </body>
+</html>
