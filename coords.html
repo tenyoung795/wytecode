@@ -22,7 +22,6 @@
       var numRows = 12;
       var numColumns = 40;
       var erasing = false;
-
       function toggleEraseWrite() {
       	var button = document.getElementById("eraseOrWrite");
       	if(erasing) {
@@ -34,7 +33,6 @@
       		button.innerHTML = "Erasing; Switch to Write Mode";
       	}
       }
-
       function clear(obj) { //call clear(td)
       	if(obj) {
       		var canvas = document.getElementById("c_"+obj.id);
@@ -42,7 +40,6 @@
       		canvas.width = canvas.width;
       	}
       }
-
       function clearLastCell(){
         var last = historyStack.pop();
         if(last) {
@@ -52,7 +49,6 @@
           canvas.width = canvas.width;
         }
       }
-
       function clearAll(){
       	for(var i = 0; i < keys.length;i++){
       		points[keys[i]] = [];
@@ -61,7 +57,6 @@
       		
       	}
       }
-
       function listOfListsOfCoordinatesAsListOfStrings(list) {
    		  var ret = [];
 			  var coords;
@@ -73,13 +68,13 @@
 						  coords += " ";
 						}
 						else if(j+2 >= list[i].length) {
-					    ret[i] += coords;
+					    	coords += ";";
 						}
+						ret[i] += coords;
 					}
 	      }
 	      return ret;
 	     }
-
       function listOfListsOfCoordinatesAsString(list) {
         var ret = "";
         var coords;
@@ -109,13 +104,13 @@
 		    //console.log(str);
 		    //alert(str);
         //alert("Sending to back end!");
-				var socket = new WebSocket("ws://localhost:9998/");
+				var socket = new WebSocket("ws://localhost:9998/", "");
 				socket.onopen = function(event) {
 			     for(var i = 0; i < strs.length; i++) {
-						alert("About to send the following:\n" + strs[i]);
 				    socket.send(strs[i]);
 				  }
 				};
+
 				socket.onmessage = function(event) {
 				  //do something here - assume message is the plain text of a source file
 					code += event.data;
@@ -170,7 +165,6 @@
     		}
      	});
     }
-
     function getPoints(obj) {
     	var ret = "";
       var counter = 0;
@@ -180,7 +174,6 @@
       }
 		  return ret;
     }
-
     function getListString(){
      	var ret = "";
      	for (var i = 0; i < keys.length;i++){
@@ -188,7 +181,6 @@
      	}
      	return ret;
      }
-
     function getList() {
     	var ret = [];
     	for(var i = 0; i < keys.length; i++) {
