@@ -40,8 +40,11 @@
       var coords;
       for(var i = 0; i < list.length; i++) {
 			 for(var j = 0; j < list[i].length; j++) {
-			 			if(list[i][j].x >= 0) {
-					    	coords = list[i][j].x + "," + list[i][j].y + " ";
+			 		    if(list[i][j].x >= 0) {
+			 coords = list[i][j].x + "," + list[i][j].y;
+			 if(j+1<list[i].length) {
+						if(list[i][j+1].x >= 0) coords += " ";
+						}
 						}
 						else {
 							coords = ";";
