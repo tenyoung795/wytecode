@@ -46,13 +46,14 @@
 					    //console.log(str);
 					    //alert(str);
       //alert("Sending to back end!");
-					    //var socket = new WebSocket(/*URL, protocol*/);
-					    /**socket.onopen = function(event) {
+					    var socket = new WebSocket(/*URL, protocol*/);
+					    socket.onopen = function(event) {
 					    socket.send(str);
 					    };
 					    socket.onmessage = function(event) {
-					    //do something here
-					    }*/
+					    //do something here - assume message is the plain text of a source file
+					    alert(event.data);
+					    }
       }
       
       function addDownHandler(obj) {
