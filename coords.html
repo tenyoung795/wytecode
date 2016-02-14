@@ -10,7 +10,7 @@
       var mouseWasClickedHere;
       var isDrawing = false;
       var ctx;
-      var points = [];
+      var points = {};
       
       function addDownHandler(obj) {
       obj.addEventListener("mousedown", function(e){var xPosition = e.clientX - obj.getBoundingClientRect().left;
@@ -23,7 +23,8 @@
       ctx = document.getElementById("c_"+obj.id).getContext("2d");
       isDrawing = true;
       ctx.moveTo(xPosition, yPosition);
-      points[points.length] = {x: xPosition, y: yPosition};
+      //points[points.length] = {x: xPosition, y: yPosition};
+      points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
       ctx.stroke();
       });
       }
@@ -45,14 +46,15 @@
       }
       var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
       document.getElementById("coords").innerHTML += coords;
+      points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
       }
       });
       }
 
-      function getPoints() {
+      function getPoints(obj) {
       var ret = "";
       var counter = 0;
-      for(counter = 0; counter < points.length; counter++) {
+      for(counter = 0; counter < points[obj.id].length; counter++) {
 				 var coords = "(" + points[counter].x + ", " + points[counter].y + ") ";
 				 ret += coords;
 				 }
@@ -72,7 +74,7 @@
       //ctx.moveTo(xPosition, yPosition);
       ctx.stroke();
       //ctx.closePath();
-      alert(points);
+      alert(getPoints(obj));
       }
       }
       var coords = "(" + e.clientX + ", " + e.clientY + ").";
