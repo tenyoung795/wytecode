@@ -138,7 +138,7 @@
 	     		isDrawing = true;
 	     		ctx.moveTo(xPosition, yPosition);
 	     		//points[points.length] = {x: xPosition, y: yPosition};
-	     		points[obj.id][points[obj.id].length] = {x: xPosition, y: cellSide-yPosition};
+	     		points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
 	     		ctx.stroke();
 	   			var parent = document.getElementById("c_"+obj.id).parentNode.id;
 	     		if(parseInt(parent.substring(4, parent.length-4)) === numRows-1) {
@@ -165,7 +165,7 @@
             }
         		var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
         		document.getElementById("coords").innerHTML += coords;
-        		points[obj.id][points[obj.id].length] = {x: xPosition, y: cellSide-yPosition};
+        		points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
         	}
     		}
      	});
