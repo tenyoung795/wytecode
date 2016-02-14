@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>CodeCanvas</title>
-    
   </head>
   <body style="overflow-x:visible, overflow-y:visible">
   	<div id="buttons" style="position:fixed">
@@ -45,14 +44,15 @@
       }
 
       function clearLastCell(){
-      var last = historyStack.pop();
-      if(last) {
-      points[last.id] = [];
-      var canvas = document.getElementById("c_"+last.id);
-      //canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-      canvas.width = canvas.width;
+        var last = historyStack.pop();
+        if(last) {
+          points[last.id] = [];
+          var canvas = document.getElementById("c_"+last.id);
+          //canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+          canvas.width = canvas.width;
+        }
       }
-      }
+
       function clearAll(){
       	for(var i = 0; i < keys.length;i++){
       		points[keys[i]] = [];
@@ -62,168 +62,169 @@
       	}
       }
 
-			   function listOfListsOfCoordinatesAsListOfStrings(list) {
-			   var ret = [];
-			   var coords;
-			   for(var i = 0; i < list.length; i++) {
-					      ret[i] = "";
-					      for(var j = 0; j < list[i].length; j++) {
-								 coords = list[i][j].x + "," + list[i][j].y;
-								 if(j+2 < list[i].length && list[i][j+1].x >= 0) {
-								 coords += " ";
-								 }
-								 else if(j+2 >= list[i].length) {
-					      
-								 ret[i] += coords;
-								 }
-								 }
-								 return ret;
-								 }
+      function listOfListsOfCoordinatesAsListOfStrings(list) {
+   		  var ret = [];
+			  var coords;
+			  for(var i = 0; i < list.length; i++) {
+				  ret[i] = "";
+				  for(var j = 0; j < list[i].length; j++) {
+				    coords = list[i][j].x + "," + list[i][j].y;
+					  if(j+2 < list[i].length && list[i][j+1].x >= 0) {
+						  coords += " ";
+						}
+						else if(j+2 >= list[i].length) {
+					    ret[i] += coords;
+						}
+					}
+	      }
+	      return ret;
+	     }
 
       function listOfListsOfCoordinatesAsString(list) {
-      var ret = "";
-      var coords;
-      for(var i = 0; i < list.length; i++) {
-			 for(var j = 0; j < list[i].length; j++) {
+        var ret = "";
+        var coords;
+        for(var i = 0; i < list.length; i++) {
+			    for(var j = 0; j < list[i].length; j++) {
 			 			if(list[i][j].x >= 0) {
-					    	coords = list[i][j].x + "," + list[i][j].y;
-			          if(j+2 < list[i].length && list[i][j+1].x >= 0) {
-				          coords += " ";
-				        }
+					    coords = list[i][j].x + "," + list[i][j].y;
+			        if(j+2 < list[i].length && list[i][j+1].x >= 0) {
+				        coords += " ";
+				      }
 						}
 						else {
 							coords = ";";
 						}
-					    ret += coords;
-					    }
-					    ret = ret.concat("\n");
-			 }
-      return ret;
+					  ret += coords;
+			    }
+				  ret = ret.concat("\n");
+			  }
+        return ret;
       }
       
-       function sendToBackEnd(){
+      function sendToBackEnd(){
       	var list = getList();
-					    var strs = listOfListsOfCoordinatesAsListOfStrings(list);
-			 var code = "";
-					    //document.getElementById("coords").innerHTML = "<code>" + str + "</code>";
-					    //console.log(str);
-					    alert(str);
-      //alert("Sending to back end!");
-					    /*var socket = new WebSocket(/*URL, protocol);
-					    socket.onopen = function(event) {
-			 for(var i = 0; i < strs.length; i++) {
-					    socket.send(strs[i]);
-					    }
-					    };
-					    socket.onmessage = function(event) {
-					    //do something here - assume message is the plain text of a source file
-					    code += event.data;
-					    alert(code);
-					    }*/
-      }
+			  var strs = listOfListsOfCoordinatesAsListOfStrings(list);
+			  var code = "";
+		    //document.getElementById("coords").innerHTML = "<code>" + str + "</code>";
+		    //console.log(str);
+		    //alert(str);
+        //alert("Sending to back end!");
+				var socket = new WebSocket("ws://localhost:9998/", "");
+				socket.onopen = function(event) {
+			     for(var i = 0; i < strs.length; i++) {
+				    socket.send(strs[i]);
+				  }
+				};
+				socket.onmessage = function(event) {
+				  //do something here - assume message is the plain text of a source file
+					code += event.data;
+				    alert(code);
+			    };
+        }
       
     function addDownHandler(obj) {
 	    obj.addEventListener("mousedown", function(e){
-	      	if(!erasing){
-	      		var xPosition = e.clientX - obj.getBoundingClientRect().left;
-	      		var yPosition = e.clientY - obj.getBoundingClientRect().top;
-	      		//obj.innerHTML = "down:" + xPosition + " " + yPosition;
-	      		isMouseDown = true;
-	      		var coords = "Coordinates: (" + e.clientX + ", " + e.clientY + ") -> ";
-	      		document.getElementById("coords").innerHTML = coords;
-	      		mouseWasClickedHere = obj;
-	      		historyStack.push(obj);
-	      		ctx = document.getElementById("c_"+obj.id).getContext("2d");
-	      		isDrawing = true;
-	      		ctx.moveTo(xPosition, yPosition);
-	      		//points[points.length] = {x: xPosition, y: yPosition};
-	      		points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
-	      		ctx.stroke();
-				var parent = document.getElementById("c_"+obj.id).parentNode.id;
-	      		if(parseInt(parent.substring(4, parent.length-4)) === numRows-1) {
-					addRow();
-				}
+	    	if(!erasing){
+	     		var xPosition = e.clientX - obj.getBoundingClientRect().left;
+	     		var yPosition = e.clientY - obj.getBoundingClientRect().top;
+	     		//obj.innerHTML = "down:" + xPosition + " " + yPosition;
+	     		isMouseDown = true;
+	     		var coords = "Coordinates: (" + e.clientX + ", " + e.clientY + ") -> ";
+	     		document.getElementById("coords").innerHTML = coords;
+	     		mouseWasClickedHere = obj;
+	     		historyStack.push(obj);
+	     		ctx = document.getElementById("c_"+obj.id).getContext("2d");
+	     		isDrawing = true;
+	     		ctx.moveTo(xPosition, yPosition);
+	     		//points[points.length] = {x: xPosition, y: yPosition};
+	     		points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
+	     		ctx.stroke();
+	   			var parent = document.getElementById("c_"+obj.id).parentNode.id;
+	     		if(parseInt(parent.substring(4, parent.length-4)) === numRows-1) {
+					  addRow();
+				  }
 	     	}
 	     	else{
 	     		clear(obj);
 	     	}
 	    });
-	}
+	  }
       
-      function addMoveHandler(obj){
-      	obj.addEventListener("mousemove", function(e){
-    		if(!erasing){
-    			var xPosition = e.clientX - obj.getBoundingClientRect().left;
-      			var yPosition = e.clientY - obj.getBoundingClientRect().top;
-      			if(isMouseDown){
-      				if(mouseWasClickedHere === obj) {
-      					if(isDrawing) {
-      						ctx.lineTo(xPosition, yPosition);
-     						ctx.stroke();
+    function addMoveHandler(obj){
+     	obj.addEventListener("mousemove", function(e){
+      	if(!erasing){
+      		var xPosition = e.clientX - obj.getBoundingClientRect().left;
+      		var yPosition = e.clientY - obj.getBoundingClientRect().top;
+      		if(isMouseDown){
+      			if(mouseWasClickedHere === obj) {
+      				if(isDrawing) {
+      					ctx.lineTo(xPosition, yPosition);
+      					ctx.stroke();
      					}
-      				}
-      				var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
-      				document.getElementById("coords").innerHTML += coords;
-      				points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
-      			}
-      		}
-    	});
+            }
+        		var coords = "(" + e.clientX + ", " + e.clientY + ") -> ";
+        		document.getElementById("coords").innerHTML += coords;
+        		points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
+        	}
+    		}
+     	});
     }
 
     function getPoints(obj) {
     	var ret = "";
-      	var counter = 0;
-      	for(counter = 0; counter < points[obj.id].length; counter++) {
-			var coords = "(" + points[obj.id][counter].x + ", " + points[obj.id][counter].y + ") ";
-				 ret += coords;
-		}
-		return ret;
+      var counter = 0;
+      for(counter = 0; counter < points[obj.id].length; counter++) {
+			  var coords = "(" + points[obj.id][counter].x + ", " + points[obj.id][counter].y + ") ";
+			  ret += coords;
+      }
+		  return ret;
+    }
+
+    function getListString(){
+     	var ret = "";
+     	for (var i = 0; i < keys.length;i++){
+     		ret+= listAsString(points[keys[i]]);
+     	}
+     	return ret;
      }
 
-      function getListString(){
-      	var ret = "";
-      	for (var i = 0; i < keys.length;i++){
-      		ret+= listAsString(points[keys[i]]);
-      	}
-      	return ret;
-      }
-      function getList() {
-      	var ret = [];
-      	for(var i = 0; i < keys.length; i++) {
-      		ret[i] = points[keys[i]];
-      	}
-      	return ret;
-      }
-      function listAsString(lst) {
-      	var ret = "";
-      	for(var i = 0; i < lst.length; i++) {
-      		var coords = "(" + lst[i].x + ", " + lst[i].y + ") ";
-      		ret += coords;
-      	}
-      	return ret;
-      }
+    function getList() {
+    	var ret = [];
+    	for(var i = 0; i < keys.length; i++) {
+    		ret[i] = points[keys[i]];
+    	}
+    	return ret;
+    }
+    function listAsString(lst) {
+    	var ret = "";
+    	for(var i = 0; i < lst.length; i++) {
+    		var coords = "(" + lst[i].x + ", " + lst[i].y + ") ";
+    		ret += coords;
+    	}
+    	return ret;
+    }
       function addRow() {
-			   //alert("Adding a row!");
-			   var tb = document.getElementById("table_body");
-			   var tr = document.createElement('TR');
-			   tr.id = "row " + numRows.toString();
-			   tableBody.appendChild(tr);
-			   for(var i = 0; i < numColumns; i++) {
-					      var td = document.createElement('TD');
-					      td.width='50';
-					      td.height='50';
-					      tr.appendChild(td);
-					      td.id = numRows.toString()+"_"+i.toString();
-					      var canvasHTML = "<canvas id=\"c_"+numRows.toString()+"_"+i.toString()+"\" width=\"50\" height=\"50\"></canvas>";
-					      td.innerHTML = canvasHTML;
-					      points[td.id]=[];
-					      keys[keys.length] = td.id;
-					      addDownHandler(td);
-					      addUpHandler(td);
-					      addMoveHandler(td);
-					      }
-					      numRows++;
-			   }
+			  //alert("Adding a row!");
+			  var tb = document.getElementById("table_body");
+			  var tr = document.createElement('TR');
+			  tr.id = "row " + numRows.toString();
+			  tableBody.appendChild(tr);
+			  for(var i = 0; i < numColumns; i++) {
+				  var td = document.createElement('TD');
+				  td.width='50';
+				  td.height='50';
+				  tr.appendChild(td);
+				  td.id = numRows.toString()+"_"+i.toString();
+				  var canvasHTML = "<canvas id=\"c_"+numRows.toString()+"_"+i.toString()+"\" width=\"50\" height=\"50\"></canvas>";
+					td.innerHTML = canvasHTML;
+					points[td.id]=[];
+					keys[keys.length] = td.id;
+					addDownHandler(td);
+					addUpHandler(td);
+					addMoveHandler(td);
+				}
+	      numRows++;
+  	  }
       
       function addUpHandler(obj) {
       	obj.addEventListener("mouseup", function(e){
@@ -231,20 +232,20 @@
       			var xPosition = e.clientX - obj.getBoundingClientRect().left;
       			var yPosition = e.clientY - obj.getBoundingClientRect().top;
       			isMouseDown = false;
-      		if(obj === mouseWasClickedHere) {
-      			if(isDrawing) {
+      		  if(obj === mouseWasClickedHere) {
+      			 if(isDrawing) {
       				ctx.lineTo(xPosition, yPosition);
       				ctx.stroke();
       				points[obj.id][points[obj.id].length] = {x:-1, y:-1};
       				alert(getPoints(obj));
-      		//alert(getListString());
-      			}
-      		}
-      		var coords = "(" + e.clientX + ", " + e.clientY + ").";
-      		document.getElementById("coords").innerHTML += coords;
-      		isDrawing = false;
-      	}
-      });
+      		    //alert(getListString());
+      			 }
+      		  }
+      		  var coords = "(" + e.clientX + ", " + e.clientY + ").";
+      		  document.getElementById("coords").innerHTML += coords;
+      		  isDrawing = false;
+      	  }
+        });
       
       }
       
