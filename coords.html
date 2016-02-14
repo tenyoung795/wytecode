@@ -15,10 +15,12 @@
       var ctx;
       var points = {};
       var keys = [];
-      var stack = new Array();
+      var historyStack = new Array();
+      var numRows = 10;
+      var numColumns = 10;
 
       function clearLastCell(){
-      	var last = stack.pop();
+      	var last = historyStack.pop();
       	points[last.id] = [];
       	var can = document.getElementById("c_"+last.id);
       	var con = can.getContext("2d");
@@ -72,13 +74,17 @@
       var coords = "Coordinates: (" + e.clientX + ", " + e.clientY + ") -> ";
       document.getElementById("coords").innerHTML = coords;
       mouseWasClickedHere = obj;
-      stack.push(obj);
+      historyStack.push(obj);
       ctx = document.getElementById("c_"+obj.id).getContext("2d");
       isDrawing = true;
       ctx.moveTo(xPosition, yPosition);
       //points[points.length] = {x: xPosition, y: yPosition};
       points[obj.id][points[obj.id].length] = {x: xPosition, y: yPosition};
       ctx.stroke();
+					    var parent = document.getElementById("c_"+obj.id).parentNode.id;
+      if(parseInt(parent.substring(4, parent.length-4)) === numRows-1) {
+					    addRow();
+					    }
       });
       }
       
@@ -134,6 +140,29 @@
       	}
       	return ret;
       }
+
+      function addRow() {
+			   alert("Adding a row!");
+			   var tb = document.getElementById("table_body");
+			   var tr = document.createElement('TR');
+			   tr.id = "row " + numRows.toString();
+			   tableBody.appendChild(tr);
+			   for(var i = 0; i < numColumns; i++) {
+					      var td = document.createElement('TD');
+					      td.width='50';
+					      td.height='50';
+					      tr.appendChild(td);
+					      td.id = numRows.toString()+"_"+i.toString();
+					      var canvasHTML = "<canvas id=\"c_"+numRows.toString()+"_"+j.toString()+"\" width=\"50\"></canvas>";
+					      td.innerHTML = canvasHTML;
+					      points[td.id]=[];
+					      keys[keys.length] = td.id;
+					      addDownHandler(td);
+					      addUpHandler(td);
+					      addMoveHandler(td);
+					      }
+					      numRows++;
+			   }
       
       function addUpHandler(obj) {
       obj.addEventListener("mouseup", function(e){
@@ -158,17 +187,19 @@
       }
       
       var table = document.createElement('TABLE');
+			   table.id = "table";
       table.border='1';
       
       var tableBody = document.createElement('TBODY');
+			   tableBody.id = "table_body";
       table.appendChild(tableBody);
       
-      for (var i=0; i<10; i++){
+      for (var i=0; i<numRows; i++){
 			  var tr = document.createElement('TR');
 			  tr.id = "row " + i.toString();
 			  tableBody.appendChild(tr);
 			  
-			  for (var j=0; j<10; j++){
+			  for (var j=0; j<numColumns; j++){
 					      var td = document.createElement('TD');
 					      td.width='50';
 					      td.height = '50';
