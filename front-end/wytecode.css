@@ -1,0 +1,87 @@
+/* wytecode CSS
+   HackBU Project 2016
+
+   Ten-Young Guh
+   Alex
+   Kaitlyn
+   Rachael
+ */
+
+ html,
+ p {
+ 	font-family: Calibri;
+ 	font-size: 20px;
+ 	color: #ffffff;
+ }
+ body {
+ 	margin: 0;
+ }
+
+ *, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+.logoMIDDLE {
+	position: absolute;
+	top: 15%;
+	left: 50%;
+	margin-left: -500px;
+	margin-top: -80px;
+}
+
+.hackbu2016 {
+	position: absolute;
+	top: 120%;
+	left: 53%;
+	margin-left: -410px;
+	margin-top: -500px;
+}
+
+.deskIcon {
+	position: absolute;
+	top: 180%;
+	left: 50%;
+	margin-left: -300px;
+	margin-top: -600px;
+}
+
+.globe {
+	position: absolute;
+	top: 250%;
+	left: 50%;
+	margin-left: -750px;
+	margin-top: -460px;
+}
+
+/*
+.wrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -95px;
+	margin-top: 200px;
+}
+
+.myButton {
+	background-color: transparent;
+	border: 4px solid #ffffff;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	text-shadow: 2px 2px rgba(0,0,0,0.3);
+	font-family: Langdon;
+	font-size: 30px;
+	padding: 10px 25px;
+	text-decoration: none;
+	position: absolute;
+	top: 80%;
+}
+
+.myButton:hover {
+   	background: rgba(0,0,0,0.4); 
+   	color:rgba(255,255,255, 1);
+}
+
+.myButton2:active {
+}
+*/
