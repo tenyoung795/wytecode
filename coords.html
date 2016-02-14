@@ -18,24 +18,20 @@
       var historyStack = new Array();
       var numRows = 10;
       var numColumns = 10;
-
       function clearLastCell(){
       	var last = historyStack.pop();
       	points[last.id] = [];
       	var can = document.getElementById("c_"+last.id);
-      	var con = can.getContext("2d");
-      	con.clearRect(0,0,can.width, can.height);
+      	c.width = c.width;
       }
       function clearAll(){
       	for(var i = 0; i < keys.length;i++){
       		points[keys[i]] = [];
       		var c = document.getElementById("c_"+keys[i]);
-      		//alert("c_"+keys[i]);
-      		var con  = c.getContext("2d");
-      		con.clearRect(0, 0, c.width, c.height);
+      		c.width= c.width;
+      		
       	}
       }
-
       function listOfListsOfCoordinatesAsString(list) {
       var ret = "";
       var coords;
@@ -140,7 +136,6 @@
       	}
       	return ret;
       }
-
       function addRow() {
 			   alert("Adding a row!");
 			   var tb = document.getElementById("table_body");
@@ -153,7 +148,7 @@
 					      td.height='50';
 					      tr.appendChild(td);
 					      td.id = numRows.toString()+"_"+i.toString();
-					      var canvasHTML = "<canvas id=\"c_"+numRows.toString()+"_"+j.toString()+"\" width=\"50\"></canvas>";
+					      var canvasHTML = "<canvas id=\"c_"+numRows.toString()+"_"+i.toString()+"\" width=\"50\" height=\"50\"></canvas>";
 					      td.innerHTML = canvasHTML;
 					      points[td.id]=[];
 					      keys[keys.length] = td.id;
