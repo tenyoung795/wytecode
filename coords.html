@@ -103,10 +103,11 @@
 		    //document.getElementById("coords").innerHTML = "<code>" + str + "</code>";
 		    //console.log(str);
 		    //alert(str);
-        //alert("Sending to back end!");
+			   alert("Sending to back end!");
 				var socket = new WebSocket("ws://localhost:9998/");
 				socket.onopen = function(event) {
 			     for(var i = 0; i < strs.length; i++) {
+						alert("About to send the following:\n" + strs[i]);
 				    socket.send(strs[i]);
 				  }
 				};
