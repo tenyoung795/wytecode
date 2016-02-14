@@ -34,14 +34,14 @@
 	top: 120%;
 	left: 53%;
 	margin-left: -410px;
-	margin-top: -500px;
+	margin-top: -460px;
 }
 
 .deskIcon {
 	position: absolute;
 	top: 180%;
 	left: 50%;
-	margin-left: -300px;
+	margin-left: -550px;
 	margin-top: -600px;
 }
 
@@ -53,28 +53,50 @@
 	margin-top: -460px;
 }
 
-/*
+.whatsnext {
+	position: absolute;
+	top: 340%;
+	left: 50%;
+	margin-left: -370px;
+	margin-top: -320px;
+}
+
+.phonead {
+	position: absolute;
+	top: 380%;
+	left: 50%;
+	margin-left: -500px;
+	margin-top: -540px;
+}
+
+.handad {
+	position: absolute;
+	top: 380%;
+	left: 50%;
+	margin-left: 80px;
+	margin-top: -520px;
+}
+
 .wrapper {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -95px;
-	margin-top: 200px;
+	margin-left: -60px;
+	margin-top: 150px;
 }
 
 .myButton {
 	background-color: transparent;
-	border: 4px solid #ffffff;
+	border: 4px solid #525252;
 	display: inline-block;
 	cursor: pointer;
-	color: #ffffff;
-	text-shadow: 2px 2px rgba(0,0,0,0.3);
+	color: #525252;
 	font-family: Langdon;
-	font-size: 30px;
+	font-size: 40px;
 	padding: 10px 25px;
 	text-decoration: none;
 	position: absolute;
-	top: 80%;
+	top: 10%;
 }
 
 .myButton:hover {
@@ -82,6 +104,5 @@
    	color:rgba(255,255,255, 1);
 }
 
-.myButton2:active {
+.myButton:active {
 }
-*/
