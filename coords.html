@@ -68,9 +68,9 @@
 			 for(var j = 0; j < list[i].length; j++) {
 			 			if(list[i][j].x >= 0) {
 					    	coords = list[i][j].x + "," + list[i][j].y;
-			 if(j+1 < list[i].length) {
-				  coords += " ";
-				  }
+			          if(j+2 < list[i].length && list[i][j+1].x >= 0) {
+				          coords += " ";
+				        }
 						}
 						else {
 							coords = ";";
