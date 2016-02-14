@@ -14,8 +14,33 @@
       var points = {};
       var keys = [];
 
+      function listOfListsOfCoordinatesAsString(list) {
+      var ret = "";
+      var coords;
+      for(var i = 0; i < list.length; i++) {
+			 for(var j = 0; j < list[i].length; j++) {
+					    coords = list[i][j].x + "," + list[i][j].y + " ";
+					    ret += coords;
+					    }
+					    ret = ret.concat("\n");
+			 }
+      return ret;
+      }
+      
       function sendToBackEnd(){
       	var list = getList();
+					    var str = listOfListsOfCoordinatesAsString(list);
+					    //document.getElementById("coords").innerHTML = "<code>" + str + "</code>";
+					    //console.log(str);
+					    //alert(str);
+      //alert("Sending to back end!");
+					    var socket = new WebSocket(/*URL*/, /*protocol*/);
+					    socket.onopen = function(event) {
+					    socket.send(str);
+					    };
+					    socket.onmessage = function(event) {
+					    //do something here
+					    }
       }
       
       function addDownHandler(obj) {
