@@ -19,10 +19,13 @@
       var numRows = 12;
       var numColumns = 40;
       function clearLastCell(){
-      	var last = historyStack.pop();
-      	points[last.id] = [];
-      	var can = document.getElementById("c_"+last.id);
-      	c.width = c.width;
+      var last = historyStack.pop();
+      if(last) {
+      points[last.id] = [];
+      var canvas = document.getElementById("c_"+last.id);
+      //canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      canvas.width = canvas.width;
+      }
       }
       function clearAll(){
       	for(var i = 0; i < keys.length;i++){
