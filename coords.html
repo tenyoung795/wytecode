@@ -3,24 +3,35 @@
   <head>
     <script>
       var show = 1;
+      var isMouseDown;
       function mouseDown(event) {
       var x = event.clientX;
       var y = event.clientY;
-      var coords = "(" + x + ", " + y + ") ->";
+      var coords = "(" + x + ", " + y + ") -> ";
       document.getElementById("demo").innerHTML += coords;
       /*while(show === 1) {
       x = event.clientX;
       y = event.clientY;
-      coords = "(" + x + ", " + y + ")";
+      coords = "(" + x + ", " + y + ") -> ";
       document.getElementById("demo").innerHTML+= coords;
       }*/
+      isMouseDown=true;
       }
       function mouseUp(event) {
       show = 0;
       var x = event.clientX;
       var y = event.clientY;
-      var coords = "(" + x + ", " + y + ")";
+      var coords = "(" + x + ", " + y + ")\n";
       document.getElementById("demo").innerHTML += coords;
+      isMouseDown=false;
+      }
+      function mouseMove(event) {
+      var x = event.clientX;
+      var y = event.clientY;
+      var coords = "(" + x + ", " + y + ") -> ";
+      if(isMouseDown) {
+      document.getElementById("demo").innerHTML += coords;
+      }
       }
     </script>
     <h2>
@@ -29,7 +40,7 @@
   </head>
   <body>
     <p id="demo">Coordinates: </p>
-    <canvas width="500" height="200" onmousedown="mouseDown(event)" onmouseup="mouseUp(event)">
+    <canvas width="500" height="200" onmousedown="mouseDown(event)" onmouseup="mouseUp(event)" onmousemove="mouseMove(event)">
     </canvas>
   </body>
 </html>
