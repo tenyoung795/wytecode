@@ -61,6 +61,25 @@
       		
       	}
       }
+
+			   function listOfListsOfCoordinatesAsListOfStrings(list) {
+			   var ret = [];
+			   var coords;
+			   for(var i = 0; i < list.length; i++) {
+					      ret[i] = "";
+					      for(var j = 0; j < list[i].length; j++) {
+								 coords = list[i][j].x + "," + list[i][j].y;
+								 if(j+2 < list[i].length && list[i][j+1].x >= 0) {
+								 coords += " ";
+								 }
+								 else if(j+2 >= list[i].length) {
+					      
+								 ret[i] += coords;
+								 }
+								 }
+								 return ret;
+								 }
+
       function listOfListsOfCoordinatesAsString(list) {
       var ret = "";
       var coords;
@@ -84,18 +103,22 @@
       
        function sendToBackEnd(){
       	var list = getList();
-					    var str = listOfListsOfCoordinatesAsString(list);
+					    var strs = listOfListsOfCoordinatesAsListOfStrings(list);
+			 var code = "";
 					    //document.getElementById("coords").innerHTML = "<code>" + str + "</code>";
 					    //console.log(str);
 					    alert(str);
       //alert("Sending to back end!");
 					    /*var socket = new WebSocket(/*URL, protocol);
 					    socket.onopen = function(event) {
-					    socket.send(str);
+			 for(var i = 0; i < strs.length; i++) {
+					    socket.send(strs[i]);
+					    }
 					    };
 					    socket.onmessage = function(event) {
 					    //do something here - assume message is the plain text of a source file
-					    alert(event.data);
+					    code += event.data;
+					    alert(code);
 					    }*/
       }
       
